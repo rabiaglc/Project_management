@@ -10,7 +10,7 @@ def connect_to_database():
         connection = mysql.connector.connect(
             host="localhost",
             user="root",  # MySQL kullanıcı adı
-            password="admin",  # MySQL şifresi
+            password="2468",  # MySQL şifresi
             database="project_management"  # Kullanılacak veritabanı
         )
         if connection.is_connected():
@@ -30,3 +30,11 @@ def connect_to_database():
     finally:
         # Başarısız bir bağlantı durumunda kapatma işlemi yapılırsa buradan eklenebilir
         pass
+
+def close_connection(connection):
+    """
+    Veritabanı bağlantısını kapatır.
+    """
+    if connection and connection.is_connected():
+        connection.close()
+        print("Veritabanı bağlantısı kapatıldı.")

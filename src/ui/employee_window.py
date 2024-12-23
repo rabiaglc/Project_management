@@ -74,35 +74,45 @@ class EmployeeWindow:
         self.refresh_employees()
 
     def refresh_employees(self):
-        """Çalışan listesini yenile."""
-        self.employee_list.delete(0, tk.END)
-        employees = read_employees()
+        employees = read_employees()  # Bu fonksiyon çalışanları sözlük olarak döndürüyor
         for employee in employees:
-            self.employee_list.insert(tk.END, f"{employee[0]} - {employee[1]} ({employee[2]})")
+            # Sözlük elemanlarına anahtarları ile erişiyoruz
+            self.employee_list.insert(tk.END, f"{employee['id']} - {employee['name']} ({employee['position']})")
+
 
     def add_employee(self):
-        """Yeni bir çalışan ekle."""
-        name = self.employee_name.get()
-        position = self.employee_position.get()
+        name = self.name_entry.get()  # İsim
+        position = self.position_entry.get()  # Pozisyon
+    
+     # Eksik bilgi varsa uyarı ver
         if not name or not position:
-            messagebox.showerror("Hata", "Ad ve pozisyon alanları boş olamaz.")
+            messagebox.showerror("Eksik Bilgi", "İsim ve pozisyon alanlarını doldurun!")
             return
+
+        # Çalışan ekleme işlemi
         create_employee(name, position)
-        messagebox.showinfo("Başarılı", "Çalışan başarıyla eklendi.")
-        self.refresh_employees()
+        self.refresh_employees()  # Çalışanları yenile
+        messagebox.showinfo("Başarılı", f"Çalışan '{name}' başarıyla eklendi!")
+
 
     def delete_employee(self):
-        """Bir çalışanı sil."""
+        """Bir çalışanı sil."""  
         emp_id = self.employee_id.get()
         if not emp_id:
             messagebox.showerror("Hata", "Silmek için çalışan ID'si girin.")
             return
+        
+        # Silme işlemi
         delete_employee(emp_id)
+        
+        # Başarılı silme mesajı
         messagebox.showinfo("Başarılı", "Çalışan başarıyla silindi.")
+        
+        # Çalışan listesini yenileme
         self.refresh_employees()
 
     def update_employee(self):
-        """Bir çalışanın bilgilerini düzenle."""
+        """Bir çalışanın bilgilerini düzenle."""  
         emp_id = self.edit_employee_id.get()
         new_name = self.edit_employee_name.get()
         new_position = self.edit_employee_position.get()
@@ -111,6 +121,11 @@ class EmployeeWindow:
             messagebox.showerror("Hata", "Tüm alanları doldurun.")
             return
 
+        # Çalışan bilgilerini güncelleme işlemi
         update_employee(emp_id, new_name, new_position)
+        
+        # Başarılı güncelleme mesajı
         messagebox.showinfo("Başarılı", "Çalışan başarıyla güncellendi.")
-        self.refresh_employees()
+        
+        # Çalışan listesini yenileme
+        self.refresh_employees() 

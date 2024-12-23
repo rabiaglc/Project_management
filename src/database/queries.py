@@ -75,9 +75,9 @@ def update_project(project_id, new_name, new_start_date=None, new_end_date=None,
         print(f"Project ID {project_id} has been successfully updated.")
 
 # Employees
-def create_employee(name, email, phone, position):
-    query = "INSERT INTO employees (name, email, phone, position) VALUES (%s, %s, %s, %s)"
-    values = (name, email, phone, position)
+def create_employee(name, position):
+    query = "INSERT INTO employees (name, position) VALUES (%s, %s)"
+    values = (name, position)
     if execute_query(query, values):
         print(f"Employee '{name}' has been successfully added.")
 
@@ -85,20 +85,22 @@ def read_employees():
     query = "SELECT * FROM employees"
     results = fetch_data(query)
     return [
-        {'id': row[0], 'name': row[1], 'email': row[2], 'phone': row[3], 'position': row[4]} 
+        {'id': row[0], 'name': row[1], 'position': row[2]}  # Email ve phone'u kaldırdık
         for row in results
     ]
+
 
 def delete_employee(employee_id):
     query = "DELETE FROM employees WHERE id = %s"
     if execute_query(query, (employee_id,)):
         print(f"Employee ID {employee_id} has been successfully deleted.")
 
-def update_employee(employee_id, new_name, new_email, new_phone, new_position):
-    query = "UPDATE employees SET name = %s, email = %s, phone = %s, position = %s WHERE id = %s"
-    values = (new_name, new_email, new_phone, new_position, employee_id)
+def update_employee(employee_id, new_name, new_position):
+    query = "UPDATE employees SET name = %s, position = %s WHERE id = %s"
+    values = (new_name, new_position, employee_id)
     if execute_query(query, values):
         print(f"Employee ID {employee_id} has been successfully updated.")
+
 
 # Tasks
 def create_task(project_id, name, start_date, end_date, status, assigned_to):
